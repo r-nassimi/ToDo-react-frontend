@@ -1,0 +1,13 @@
+import React from 'react';
+import './App.scss';
+import ToDoList from './components/ToDoList';
+
+const App = () => {
+  return (
+    <div>
+      <ToDoList />
+    </div>
+  );
+}
+
+export default App;
