@@ -10,7 +10,7 @@ const Todo = ({ tasks, setTasks }) => {
   const [edit, setEdit] = useState({});
 
   const updateValue = () => {
-    axios.patch(`${URL}/updateTask`, edit).then(res => {
+    axios.put(`${URL}/updateTask`, edit).then(res => {
       setTasks(tasks.map(e => (e._id === res.data._id ? res.data : e)));
       setEdit({});
     });
@@ -23,19 +23,18 @@ const Todo = ({ tasks, setTasks }) => {
   };
 
   const checkboxChange = (_id, checked) => {
-    axios.patch(`${URL}/updateTask`, {
+    axios.put(`${URL}/updateTask`, {
       _id: _id,
       isCheck: !checked
     }).then(res => {
-      setTasks(prev => prev.map(item => (item._id === res.data._id ? res.data : item)));
+      setTasks(res.data);
     });
   };
 
-  tasks
-    .sort((a, b) => {
-      if (a.isCheck === b.isCheck) return 0;
-      return (a.isCheck > b.isCheck ? 1 : -1);
-    });
+  tasks.sort((a, b) => {
+    if (a.isCheck === b.isCheck) return 0;
+    return (a.isCheck > b.isCheck ? 1 : -1);
+  });
 
   return tasks.map((task, index) => (
     <div className='main'>
@@ -43,38 +42,38 @@ const Todo = ({ tasks, setTasks }) => {
         task._id === edit._id ? <div className='editInput'>
           <input
             placeholder='Введите значение'
-            value={edit.text}
+            value={ edit.text }
             onChange={(e) => setEdit({ ...edit, text: e.target.value })}
             name='text'
-            className='task-input-edit'
+            className='taskInputEdit'
           />
           <MdDone
-            onClick={updateValue}
+            onClick={ updateValue }
             className='taskEdit'
           />
           <MdOutlineCancel
-            onClick={setEdit}
+            onClick={ setEdit }
             className='taskCancel'
           />
         </div>
           :
-          <div className='card' key={task._id}>
+          <div className='card' key={`task-${ index }`}>
             <input
-              id={(`checkbox-${index}`)}
-              className='checkbox'
-              type={"checkbox"}
-              checked={task.isCheck}
+              id={(`checkbox-${ index }`)}
+              className='taskCheck'
+              type={ "checkbox" }
+              checked={ task.isCheck }
               onChange={() => checkboxChange(task._id, task.isCheck)}
             />
-            <p className={task.isCheck ? 'text-task isChecked' : 'text-task'} key={(`card-${index}`)}> {task.text} </p>
+            <p className={ task.isCheck ? 'textTask isChecked' : 'textTask' }> { task.text } </p>
             <div className='icons'>
               <AiFillDelete
                 onClick={() => deleteTask(task._id)}
-                className='delete-icon'
+                className='deleteIcon'
               />
               <AiFillEdit
                 onClick={() => setEdit(task)}
-                className='edit-icon'
+                className='editIcon'
               />
             </div>
           </div>

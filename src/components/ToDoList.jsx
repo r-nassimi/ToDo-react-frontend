@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import { useEffect, useState, } from 'react';
 import ToDoForm from './ToDoForm';
 import Todo from './Todo';
 import axios from 'axios';
@@ -19,7 +19,7 @@ const TodoList = () => {
       setTasks(res.data);
     });
   }, []);
-  
+
   const updateTask = (taskId, newValue) => {
     if (!newValue.text) {
       return;
@@ -30,10 +30,10 @@ const TodoList = () => {
   return (
     <>
       <h1>To-Do list</h1>
-      <ToDoForm onSubmit={ addTask } 
-      tasks={ tasks }
-      setTasks={ setTasks }
-      updateTask={ updateTask }
+      <ToDoForm onSubmit={ addTask }
+        tasks={ tasks }
+        setTasks={ setTasks }
+        updateTask={ updateTask }
       />
       <Todo
         tasks={ tasks }
